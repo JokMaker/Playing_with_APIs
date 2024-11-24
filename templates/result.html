@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Conversion Result</title>
+</head>
+<body>
+    <header>
+        <h1>Currency Exchange Result</h1>
+    </header>
+
+    <div class="container">
+        <h3>Conversion Details</h3>
+        <p>
+            <strong>{{ amount }} {{ base_currency }} </strong>
+            = 
+            <strong>{{ converted_amount }} {{ target_currency }}</strong>
+        </p>
+
+        <p>
+            <strong>Base Currency:</strong> {{ base_currency }} ({{ symbols[base_currency] }})<br>
+            <strong>Target Currency:</strong> {{ target_currency }} ({{ symbols[target_currency] }})<br>
+        </p>
+
+        <a href="/">Go back to the converter</a>
+    </div>
+
+    <footer>
+        <p>Powered by Currency Exchange API. &copy; 2024</p>
+    </footer>
+</body>
+</html>

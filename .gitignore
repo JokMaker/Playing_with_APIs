@@ -1,0 +1,15 @@
+# Ignore .env file to keep sensitive info secure
+.env
+
+# Ignore Python bytecode and cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore macOS-specific files
+.DS_Store
+
+# Ignore Flask database files (if applicable)
+instance/
+*.db
+

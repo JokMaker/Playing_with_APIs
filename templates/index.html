@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Currency Exchange</title>
+</head>
+<body>
+    <header>
+        <h1>Currency Exchange Rate</h1>
+    </header>
+
+    <div class="container">
+        <form action="/convert" method="post">
+            <label for="base_currency">Base Currency:</label>
+            <select name="base_currency" required>
+                {% for currency in currencies %}
+                    <option value="{{ currency }}">{{ currency }} ({{ symbols[currency] }})</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="target_currency">Target Currency:</label>
+            <select name="target_currency" required>
+                {% for currency in currencies %}
+                    <option value="{{ currency }}">{{ currency }} ({{ symbols[currency] }})</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="amount">Amount:</label>
+            <input type="number" name="amount" step="0.01" required><br><br>
+
+            <button type="submit">Convert</button>
+            <button type="reset">Clear</button>
+        </form>
+
+        <div id="loading" style="display:none;">Loading...</div>
+
+        <div id="result" style="display:none;">
+            <h3>Conversion Result</h3>
+            <p id="conversion_result"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Powered by Currency Exchange API. &copy; 2024</p>
+    </footer>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('loading').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
