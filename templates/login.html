@@ -19,7 +19,7 @@
 
         .container {
             max-width: 400px;
-            margin: 0 auto;
+            margin: 20px auto;
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
@@ -44,6 +44,11 @@
             border: 1px solid #ccc;
         }
 
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
         button {
             padding: 10px;
             font-size: 16px;
@@ -66,15 +71,6 @@
             margin-bottom: 20px;
         }
 
-        .flash-message ul {
-            padding: 0;
-            margin: 0;
-        }
-
-        .flash-message li {
-            list-style-type: none;
-        }
-
         .register-link {
             text-align: center;
             margin-top: 20px;
@@ -93,40 +89,46 @@
 <body>
     <h1>Login</h1>
     <div class="container">
-        <!-- Login form begins here -->
-        <form method="POST">
-            {{ form.hidden_tag() }}  <!-- To include hidden CSRF token -->
-            
-            <!-- Username field -->
-            <div>
-                <label for="username">Username</label>
-                {{ form.username(size=32, placeholder="Enter your username") }}
-            </div>
-            
-            <!-- Password field -->
-            <div>
-                <label for="password">Password</label>
-                {{ form.password(size=32, placeholder="Enter your password") }}
-            </div>
-
-            <!-- Submit button -->
-            <button type="submit">Login</button>
-        </form>
-
-        <!-- Display flash messages for errors -->
-        {% with messages = get_flashed_messages() %}
+        <!-- Flash messages for login errors -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="flash-message">
                     <ul>
-                        {% for message in messages %}
+                        {% for category, message in messages %}
                             <li>{{ message }}</li>
                         {% endfor %}
                     </ul>
                 </div>
             {% endif %}
         {% endwith %}
+        
+        <!-- Login form -->
+        <form method="POST" action="{{ url_for('login') }}">
+            {{ form.hidden_tag() }} <!-- CSRF token -->
 
-        <!-- Registration link -->
+            <!-- Username input -->
+            <div>
+                <label for="username">Username</label>
+                {{ form.username(size=32, placeholder="Enter your username") }}
+                {% for error in form.username.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            </div>
+
+            <!-- Password input -->
+            <div>
+                <label for="password">Password</label>
+                {{ form.password(size=32, placeholder="Enter your password") }}
+                {% for error in form.password.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Link to register page -->
         <div class="register-link">
             <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
         </div>

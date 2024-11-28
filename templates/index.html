@@ -12,7 +12,23 @@
     </header>
 
     <div class="container">
+        <!-- Flash messages for errors or success -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-message">
+                    <ul>
+                        {% for category, message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Currency conversion form -->
         <form action="/convert" method="post">
+            <!-- Removed CSRF token and form-related code -->
+
             <label for="base_currency">Base Currency:</label>
             <select name="base_currency" required>
                 {% for currency in currencies %}
@@ -47,9 +63,17 @@
     </footer>
 
     <script>
+        // Show loading indicator when form is submitted
         document.querySelector('form').addEventListener('submit', function() {
             document.getElementById('loading').style.display = 'block';
         });
+
+        // JavaScript to display conversion result after fetching the data
+        function displayResult(conversionData) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('conversion_result').innerText = conversionData;
+        }
     </script>
 </body>
 </html>
