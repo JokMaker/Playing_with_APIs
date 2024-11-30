@@ -3,73 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Currency Exchange</title>
+    <title>Currency Converter</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <header>
-        <h1>Currency Exchange Rate</h1>
-    </header>
 
     <div class="container">
-        <!-- Flash messages for errors or success -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-message">
-                    <ul>
-                        {% for category, message in messages %}
-                            <li class="{{ category }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-        {% endwith %}
+        <h1>Currency Converter</h1>
 
-        <!-- Currency conversion form -->
-        <form action="/convert" method="post">
-            <!-- CSRF Token (if using Flask-WTF, otherwise you can remove this) -->
-            {{ csrf_token() }}
-
+        <form method="POST">
             <label for="base_currency">Base Currency:</label>
-            <select name="base_currency" required>
-                {% for currency in currencies %}
-                    <option value="{{ currency }}">{{ currency }} ({{ symbols[currency] }})</option>
-                {% endfor %}
-            </select><br><br>
+            <input type="text" id="base_currency" name="base_currency" placeholder="e.g., USD" required>
 
             <label for="target_currency">Target Currency:</label>
-            <select name="target_currency" required>
-                {% for currency in currencies %}
-                    <option value="{{ currency }}">{{ currency }} ({{ symbols[currency] }})</option>
-                {% endfor %}
-            </select><br><br>
+            <input type="text" id="target_currency" name="target_currency" placeholder="e.g., EUR" required>
 
             <label for="amount">Amount:</label>
-            <input type="number" name="amount" step="0.01" required><br><br>
+            <input type="number" id="amount" name="amount" required>
 
             <button type="submit">Convert</button>
-            <button type="reset">Clear</button>
         </form>
 
-        <!-- Conversion Result -->
-        {% if conversion_result %}
-            <div id="result">
-                <h3>Conversion Result</h3>
-                <p>{{ conversion_result }}</p>
-            </div>
+        {% if rate %}
+        <div class="result">
+            <h2>Conversion Rate: {{ rate }}</h2>
+            <h3>Converted Amount: {{ converted_amount }}</h3>
+        </div>
+        {% elif error %}
+        <p class="error">{{ error }}</p>
         {% endif %}
 
     </div>
 
-    <footer>
-        <p>Powered by Currency Exchange API. &copy; 2024</p>
-    </footer>
-
-    <script>
-        // Show loading indicator when form is submitted
-        document.querySelector('form').addEventListener('submit', function() {
-            document.getElementById('loading').style.display = 'block';
-        });
-    </script>
 </body>
 </html>
