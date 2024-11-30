@@ -18,7 +18,7 @@
                 <div class="flash-message">
                     <ul>
                         {% for category, message in messages %}
-                            <li>{{ message }}</li>
+                            <li class="{{ category }}">{{ message }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -27,7 +27,8 @@
 
         <!-- Currency conversion form -->
         <form action="/convert" method="post">
-            <!-- Removed CSRF token and form-related code -->
+            <!-- CSRF Token (if using Flask-WTF, otherwise you can remove this) -->
+            {{ csrf_token() }}
 
             <label for="base_currency">Base Currency:</label>
             <select name="base_currency" required>
@@ -50,12 +51,14 @@
             <button type="reset">Clear</button>
         </form>
 
-        <div id="loading" style="display:none;">Loading...</div>
+        <!-- Conversion Result -->
+        {% if conversion_result %}
+            <div id="result">
+                <h3>Conversion Result</h3>
+                <p>{{ conversion_result }}</p>
+            </div>
+        {% endif %}
 
-        <div id="result" style="display:none;">
-            <h3>Conversion Result</h3>
-            <p id="conversion_result"></p>
-        </div>
     </div>
 
     <footer>
@@ -67,13 +70,6 @@
         document.querySelector('form').addEventListener('submit', function() {
             document.getElementById('loading').style.display = 'block';
         });
-
-        // JavaScript to display conversion result after fetching the data
-        function displayResult(conversionData) {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('conversion_result').innerText = conversionData;
-        }
     </script>
 </body>
 </html>
